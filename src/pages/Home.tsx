@@ -1,5 +1,5 @@
-import { Star, Clock, TrendingUp } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import { Star, Clock, TrendingUp, Sparkles, Zap, Activity } from "lucide-react";
+import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -50,47 +50,90 @@ const Home = () => {
   ];
   
   const stats = [
-    { label: "Active Servers", value: "2,847", icon: TrendingUp },
-    { label: "Online Players", value: "45,392", icon: Star },
-    { label: "Your Playtime", value: "142h", icon: Clock },
+    { label: "Active Servers", value: "2,847", icon: TrendingUp, gradient: "from-accent to-orange-600" },
+    { label: "Online Players", value: "45,392", icon: Activity, gradient: "from-primary to-accent" },
+    { label: "Your Playtime", value: "142h", icon: Zap, gradient: "from-success to-emerald-400" },
   ];
   
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pr-20">
+      <Sidebar />
       
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-serif font-black mb-4">
-            <span className="gradient-white-orange">Welcome Back</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Jump into your favorite servers or discover new experiences
-          </p>
-        </div>
+      <section className="relative overflow-hidden">
+        {/* Ambient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-background" />
+        <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {stats.map((stat) => (
-            <div key={stat.label} className="card-elevated p-6 text-center">
-              <stat.icon className="h-8 w-8 mx-auto mb-3 text-accent" />
-              <div className="text-3xl font-serif font-bold mb-2">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+        <div className="relative container mx-auto px-8 py-20">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6 animate-fade-in">
+              <Sparkles className="h-4 w-4 text-accent" />
+              <span className="text-sm text-accent font-medium">Welcome to FiveM</span>
+            </div>
+            
+            <h1 className="text-7xl md:text-8xl font-serif font-black mb-6 leading-none animate-slide-in-left">
+              <span className="gradient-white-orange">Your Gaming</span>
+              <br />
+              <span className="text-foreground">Universe</span>
+            </h1>
+            
+            <p className="text-xl text-muted-foreground max-w-2xl mb-8 animate-fade-in">
+              Dive into immersive experiences. Connect with players worldwide. Create unforgettable moments.
+            </p>
+            
+            <div className="flex gap-4 animate-fade-in">
+              <Link to="/servers">
+                <Button size="lg" className="gap-2 shadow-lg shadow-accent/20">
+                  <TrendingUp className="h-5 w-5" />
+                  Explore Servers
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button size="lg" variant="outline">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Stats Grid */}
+      <section className="container mx-auto px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="relative group"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 rounded-2xl blur transition-all duration-300`} />
+              <div className="relative bg-card/30 backdrop-blur-sm border border-border rounded-2xl p-8 transition-all duration-300 group-hover:border-accent/50">
+                <stat.icon className="h-8 w-8 mb-4 text-accent" />
+                <div className="text-4xl font-serif font-bold mb-2 bg-gradient-to-br bg-clip-text text-transparent from-foreground to-muted-foreground">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
+              </div>
             </div>
           ))}
         </div>
       </section>
       
       {/* Favorite Servers */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-serif font-bold flex items-center gap-2">
-            <Star className="h-6 w-6 text-accent" />
-            Favorite Servers
-          </h2>
+      <section className="container mx-auto px-8 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-4xl font-serif font-bold flex items-center gap-3 mb-2">
+              <Star className="h-8 w-8 text-accent" />
+              Favorite Servers
+            </h2>
+            <p className="text-muted-foreground">Your most played communities</p>
+          </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {favoriteServers.map((server) => (
             <ServerCard key={server.id} {...server} />
           ))}
@@ -98,14 +141,20 @@ const Home = () => {
       </section>
       
       {/* Recent Servers */}
-      <section className="container mx-auto px-4 py-8 pb-16">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-serif font-bold flex items-center gap-2">
-            <Clock className="h-6 w-6 text-accent" />
-            Recently Played
-          </h2>
+      <section className="container mx-auto px-8 py-12 pb-20">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-4xl font-serif font-bold flex items-center gap-3 mb-2">
+              <Clock className="h-8 w-8 text-accent" />
+              Recently Played
+            </h2>
+            <p className="text-muted-foreground">Jump back into the action</p>
+          </div>
           <Link to="/servers">
-            <Button variant="outline">View All Servers</Button>
+            <Button variant="outline" className="gap-2">
+              View All
+              <TrendingUp className="h-4 w-4" />
+            </Button>
           </Link>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

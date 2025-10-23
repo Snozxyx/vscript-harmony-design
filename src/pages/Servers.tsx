@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import { Search, Filter, SlidersHorizontal } from "lucide-react";
+import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -81,54 +82,78 @@ const Servers = () => {
   });
   
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="min-h-screen bg-background pr-20">
+      <Sidebar />
       
-      <section className="container mx-auto px-4 py-12">
-        <div className="mb-8">
-          <h1 className="text-5xl font-serif font-black mb-4">
-            <span className="gradient-white-orange">All Servers</span>
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Browse {allServers.length} active servers
-          </p>
-        </div>
-        
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input
-              placeholder="Search servers..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
+      {/* Header */}
+      <section className="border-b border-border bg-secondary/30 backdrop-blur-sm sticky top-0 z-40">
+        <div className="container mx-auto px-8 py-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-5xl font-serif font-black mb-2">
+                <span className="gradient-white-orange">Server Browser</span>
+              </h1>
+              <p className="text-muted-foreground">
+                Discover {allServers.length} active communities
+              </p>
+            </div>
+            <Button variant="outline" className="gap-2">
+              <SlidersHorizontal className="h-4 w-4" />
+              Advanced Filters
+            </Button>
           </div>
-          <Select value={gameMode} onValueChange={setGameMode}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Game Mode" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Modes</SelectItem>
-              <SelectItem value="roleplay">Roleplay</SelectItem>
-              <SelectItem value="racing">Racing</SelectItem>
-              <SelectItem value="deathmatch">Deathmatch</SelectItem>
-              <SelectItem value="cops & robbers">Cops & Robbers</SelectItem>
-            </SelectContent>
-          </Select>
+          
+          {/* Search & Filter Bar */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                placeholder="Search servers by name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 h-12 bg-card/50 backdrop-blur-sm border-border"
+              />
+            </div>
+            <Select value={gameMode} onValueChange={setGameMode}>
+              <SelectTrigger className="w-full md:w-[220px] h-12 bg-card/50 backdrop-blur-sm">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Game Mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Modes</SelectItem>
+                <SelectItem value="roleplay">Roleplay</SelectItem>
+                <SelectItem value="racing">Racing</SelectItem>
+                <SelectItem value="deathmatch">Deathmatch</SelectItem>
+                <SelectItem value="cops & robbers">Cops & Robbers</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        
-        {/* Server Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredServers.map((server) => (
-            <ServerCard key={server.id} {...server} />
-          ))}
-        </div>
-        
-        {filteredServers.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground text-lg">No servers found matching your criteria.</p>
+      </section>
+      
+      {/* Server Grid */}
+      <section className="container mx-auto px-8 py-12">
+        {filteredServers.length > 0 ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredServers.map((server, index) => (
+              <div
+                key={server.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <ServerCard {...server} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-full bg-muted/30 flex items-center justify-center mx-auto mb-4">
+              <Search className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h3 className="text-xl font-serif font-bold mb-2">No servers found</h3>
+            <p className="text-muted-foreground">
+              Try adjusting your search or filter criteria
+            </p>
           </div>
         )}
       </section>

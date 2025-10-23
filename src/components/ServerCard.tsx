@@ -1,6 +1,7 @@
-import { Users, Wifi } from "lucide-react";
+import { Users, Wifi, MapPin, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 interface ServerCardProps {
   id: string;
@@ -26,52 +27,73 @@ const ServerCard = ({
   const fillPercentage = (players / maxPlayers) * 100;
   
   return (
-    <Link to={`/server/${id}`} className="block">
-      <div className="card-elevated p-6 cursor-pointer group">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h3 className="text-xl font-serif font-bold mb-2 group-hover:text-accent transition-colors">
-              {name}
-            </h3>
-            <div className="flex gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Users className="h-4 w-4" />
-                {players}/{maxPlayers}
-              </span>
-              <span className="flex items-center gap-1">
-                <Wifi className="h-4 w-4" />
-                {ping}ms
-              </span>
+    <div className="group relative">
+      {/* Glow effect on hover */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-accent to-primary rounded-2xl opacity-0 group-hover:opacity-20 blur transition-all duration-300" />
+      
+      <Link to={`/server/${id}`} className="block relative">
+        <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl p-6 transition-all duration-300 group-hover:border-accent/50 group-hover:translate-y-[-4px]">
+          {/* Header */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-xl font-serif font-bold mb-2 truncate group-hover:text-accent transition-colors">
+                {name}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="text-xs">
+                  {gameMode}
+                </Badge>
+                {isFavorite && (
+                  <Badge className="bg-accent/10 text-accent border-accent/20 text-xs">
+                    ★ Favorite
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
-          {isFavorite && (
-            <div className="px-2 py-1 rounded bg-accent/10 text-accent text-xs font-medium">
-              Favorite
+          
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="flex items-center gap-2 text-sm">
+              <Users className="h-4 w-4 text-accent" />
+              <span className="text-foreground font-medium">{players}</span>
+              <span className="text-muted-foreground">/ {maxPlayers}</span>
             </div>
-          )}
-        </div>
-        
-        {/* Player Count Bar */}
-        <div className="mb-4">
-          <div className="h-2 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-bg transition-all duration-300"
-              style={{ width: `${fillPercentage}%` }}
-            />
+            <div className="flex items-center gap-2 text-sm">
+              <Wifi className="h-4 w-4 text-success" />
+              <span className="text-foreground font-medium">{ping}ms</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <MapPin className="h-4 w-4 text-primary" />
+              <span className="text-muted-foreground truncate">{map}</span>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">Mode: {gameMode}</p>
-            <p className="text-sm text-muted-foreground">Map: {map}</p>
+          
+          {/* Progress Bar */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-2 text-xs">
+              <span className="text-muted-foreground">Population</span>
+              <span className="text-foreground font-medium">{fillPercentage.toFixed(0)}%</span>
+            </div>
+            <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-accent to-primary transition-all duration-500"
+                style={{ width: `${fillPercentage}%` }}
+              />
+            </div>
           </div>
-          <Button variant="default" size="sm">
+          
+          {/* Action Button */}
+          <Button 
+            className="w-full gap-2 group-hover:shadow-lg group-hover:shadow-accent/20 transition-all" 
+            size="sm"
+          >
+            <Play className="h-4 w-4" />
             Join Server
           </Button>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 
