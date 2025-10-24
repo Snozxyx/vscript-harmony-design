@@ -1,10 +1,26 @@
+import { useState, useEffect } from "react";
 import { Star, Clock, TrendingUp, Sparkles, Zap, Activity } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
+import TermsModal from "@/components/TermsModal";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const heroImages = [
+    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80",
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1920&q=80",
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1920&q=80",
+  ];
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
   const favoriteServers = [
     {
       id: "1",
@@ -58,11 +74,30 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background pr-20">
       <Sidebar />
+      <TermsModal />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        {/* Ambient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-background to-background" />
+        {/* Hero Image Slideshow */}
+        <div className="absolute inset-0">
+          {heroImages.map((image, index) => (
+            <div
+              key={image}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <img
+                src={image}
+                alt={`Hero ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/80" />
+            </div>
+          ))}
+        </div>
+        
+        {/* Ambient Background Effects */}
         <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         
@@ -70,7 +105,7 @@ const Home = () => {
           <div className="max-w-4xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6 animate-fade-in">
               <Sparkles className="h-4 w-4 text-accent" />
-              <span className="text-sm text-accent font-medium">Welcome to FiveM</span>
+              <span className="text-sm text-accent font-medium">Welcome to GG Multiplayer</span>
             </div>
             
             <h1 className="text-7xl md:text-8xl font-serif font-black mb-6 leading-none animate-slide-in-left">
