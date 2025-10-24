@@ -31,6 +31,8 @@ const Home = () => {
       map: "Los Santos",
       ping: 45,
       isFavorite: true,
+      banner: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&q=80",
+      logo: "https://images.unsplash.com/photo-1614294148960-9aa740632a87?w=200&q=80",
     },
     {
       id: "2",
@@ -41,6 +43,8 @@ const Home = () => {
       map: "Custom Track",
       ping: 32,
       isFavorite: true,
+      banner: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
+      logo: "https://images.unsplash.com/photo-1557862921-37829c790f19?w=200&q=80",
     },
   ];
   
@@ -53,6 +57,8 @@ const Home = () => {
       gameMode: "Cops & Robbers",
       map: "Liberty City",
       ping: 28,
+      banner: "https://images.unsplash.com/photo-1532009877282-3340270e0529?w=800&q=80",
+      logo: "https://images.unsplash.com/photo-1551817958-d9d86fb29431?w=200&q=80",
     },
     {
       id: "4",
@@ -62,6 +68,8 @@ const Home = () => {
       gameMode: "Deathmatch",
       map: "Arena",
       ping: 52,
+      banner: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&q=80",
+      logo: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=200&q=80",
     },
   ];
   
