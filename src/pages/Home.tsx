@@ -1,4 +1,5 @@
-import { Star, Clock, TrendingUp, Crown, Zap, Activity } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Clock, TrendingUp, Sparkles, Zap, Activity } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
 import TermsModal from "@/components/TermsModal";
@@ -6,45 +7,20 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const premiumServers = [
-    {
-      id: "premium-1",
-      name: "Elite Roleplay Network",
-      players: 198,
-      maxPlayers: 200,
-      gameMode: "Roleplay",
-      map: "Los Santos Enhanced",
-      ping: 12,
-      isFavorite: true,
-      banner: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80",
-      logo: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=200&q=80",
-    },
-    {
-      id: "premium-2",
-      name: "Apex Racing Championship",
-      players: 98,
-      maxPlayers: 100,
-      gameMode: "Racing",
-      map: "International Circuit",
-      ping: 15,
-      isFavorite: false,
-      banner: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
-      logo: "https://images.unsplash.com/photo-1557862921-37829c790f19?w=200&q=80",
-    },
-    {
-      id: "premium-3",
-      name: "Global Combat Arena",
-      players: 150,
-      maxPlayers: 150,
-      gameMode: "Deathmatch",
-      map: "Warzone Delta",
-      ping: 18,
-      isFavorite: true,
-      banner: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&q=80",
-      logo: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=200&q=80",
-    },
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const heroImages = [
+    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80",
+    "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1920&q=80",
+    "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1920&q=80",
   ];
   
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
   const favoriteServers = [
     {
       id: "1",
@@ -109,39 +85,61 @@ const Home = () => {
       <TermsModal />
       
       <div className="flex-1 overflow-y-auto scrollbar-hide">
-        {/* Premium Servers Section */}
-        <section className="relative border-b border-border bg-secondary/30 backdrop-blur-sm">
-          <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-          
-          <div className="relative container mx-auto px-8 py-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-4xl font-serif font-black mb-2 flex items-center gap-3">
-                  <Crown className="h-8 w-8 text-accent" />
-                  <span className="gradient-white-orange">Premium Servers</span>
-                </h1>
-                <p className="text-muted-foreground">
-                  Elite communities with the best gaming experience
-                </p>
+        {/* Hero Section */}
+        <section className="relative overflow-hidden">
+          {/* Hero Image Slideshow */}
+          <div className="absolute inset-0">
+            {heroImages.map((image, index) => (
+              <div
+                key={image}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <img
+                  src={image}
+                  alt={`Hero ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/80" />
               </div>
-              <Link to="/servers">
-                <Button variant="outline" className="gap-2">
-                  View All Servers
-                  <TrendingUp className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {premiumServers.map((server, index) => (
-                <div
-                  key={server.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <ServerCard {...server} />
-                </div>
-              ))}
+            ))}
+          </div>
+          
+          {/* Ambient Background Effects */}
+          <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          
+          <div className="relative container mx-auto px-8 py-16">
+            <div className="max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-4 animate-fade-in">
+                <Sparkles className="h-4 w-4 text-accent" />
+                <span className="text-sm text-accent font-medium">Welcome to GG Multiplayer</span>
+              </div>
+              
+              <h1 className="text-6xl md:text-7xl font-serif font-black mb-4 leading-none animate-slide-in-left">
+                <span className="gradient-white-orange">Your Gaming</span>
+                <br />
+                <span className="text-foreground">Universe</span>
+              </h1>
+              
+              <p className="text-lg text-muted-foreground max-w-2xl mb-6 animate-fade-in">
+                Dive into immersive experiences. Connect with players worldwide. Create unforgettable moments.
+              </p>
+              
+              <div className="flex gap-4 animate-fade-in">
+                <Link to="/servers">
+                  <Button size="lg" className="gap-2 shadow-lg shadow-accent/20">
+                    <TrendingUp className="h-5 w-5" />
+                    Explore Servers
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button size="lg" variant="outline">
+                    Get Started
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
