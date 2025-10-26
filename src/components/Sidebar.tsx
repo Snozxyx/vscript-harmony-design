@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Server, UserPlus, Gamepad2 } from "lucide-react";
+import { Home, Server, UserPlus, Gamepad2, Settings } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import RegisterModal from "@/components/RegisterModal";
@@ -14,6 +14,7 @@ const Sidebar = () => {
   const links = [
     { path: "/", icon: Home, label: "Home" },
     { path: "/servers", icon: Server, label: "Servers" },
+    { path: "/settings", icon: Settings, label: "Settings" },
   ];
   
   return (

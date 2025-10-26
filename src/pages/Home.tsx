@@ -80,132 +80,134 @@ const Home = () => {
   ];
   
   return (
-    <div className="min-h-screen bg-background pr-20">
+    <div className="min-h-screen h-screen overflow-hidden bg-background pr-20 flex flex-col">
       <Sidebar />
       <TermsModal />
       
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Hero Image Slideshow */}
-        <div className="absolute inset-0">
-          {heroImages.map((image, index) => (
-            <div
-              key={image}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <img
-                src={image}
-                alt={`Hero ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/80" />
-            </div>
-          ))}
-        </div>
-        
-        {/* Ambient Background Effects */}
-        <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        
-        <div className="relative container mx-auto px-8 py-20">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6 animate-fade-in">
-              <Sparkles className="h-4 w-4 text-accent" />
-              <span className="text-sm text-accent font-medium">Welcome to GG Multiplayer</span>
-            </div>
-            
-            <h1 className="text-7xl md:text-8xl font-serif font-black mb-6 leading-none animate-slide-in-left">
-              <span className="gradient-white-orange">Your Gaming</span>
-              <br />
-              <span className="text-foreground">Universe</span>
-            </h1>
-            
-            <p className="text-xl text-muted-foreground max-w-2xl mb-8 animate-fade-in">
-              Dive into immersive experiences. Connect with players worldwide. Create unforgettable moments.
-            </p>
-            
-            <div className="flex gap-4 animate-fade-in">
-              <Link to="/servers">
-                <Button size="lg" className="gap-2 shadow-lg shadow-accent/20">
-                  <TrendingUp className="h-5 w-5" />
-                  Explore Servers
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button size="lg" variant="outline">
-                  Get Started
-                </Button>
-              </Link>
-            </div>
+      <div className="flex-1 overflow-y-auto">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden">
+          {/* Hero Image Slideshow */}
+          <div className="absolute inset-0">
+            {heroImages.map((image, index) => (
+              <div
+                key={image}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <img
+                  src={image}
+                  alt={`Hero ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/80" />
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
-      
-      {/* Stats Grid */}
-      <section className="container mx-auto px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className="relative group"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 rounded-2xl blur transition-all duration-300`} />
-              <div className="relative bg-card/30 backdrop-blur-sm border border-border rounded-2xl p-8 transition-all duration-300 group-hover:border-accent/50">
-                <stat.icon className="h-8 w-8 mb-4 text-accent" />
-                <div className="text-4xl font-serif font-bold mb-2 bg-gradient-to-br bg-clip-text text-transparent from-foreground to-muted-foreground">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+          
+          {/* Ambient Background Effects */}
+          <div className="absolute top-20 right-40 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          
+          <div className="relative container mx-auto px-8 py-16">
+            <div className="max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-4 animate-fade-in">
+                <Sparkles className="h-4 w-4 text-accent" />
+                <span className="text-sm text-accent font-medium">Welcome to GG Multiplayer</span>
+              </div>
+              
+              <h1 className="text-6xl md:text-7xl font-serif font-black mb-4 leading-none animate-slide-in-left">
+                <span className="gradient-white-orange">Your Gaming</span>
+                <br />
+                <span className="text-foreground">Universe</span>
+              </h1>
+              
+              <p className="text-lg text-muted-foreground max-w-2xl mb-6 animate-fade-in">
+                Dive into immersive experiences. Connect with players worldwide. Create unforgettable moments.
+              </p>
+              
+              <div className="flex gap-4 animate-fade-in">
+                <Link to="/servers">
+                  <Button size="lg" className="gap-2 shadow-lg shadow-accent/20">
+                    <TrendingUp className="h-5 w-5" />
+                    Explore Servers
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button size="lg" variant="outline">
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-      
-      {/* Favorite Servers */}
-      <section className="container mx-auto px-8 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-4xl font-serif font-bold flex items-center gap-3 mb-2">
-              <Star className="h-8 w-8 text-accent" />
-              Favorite Servers
-            </h2>
-            <p className="text-muted-foreground">Your most played communities</p>
           </div>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {favoriteServers.map((server) => (
-            <ServerCard key={server.id} {...server} />
-          ))}
-        </div>
-      </section>
-      
-      {/* Recent Servers */}
-      <section className="container mx-auto px-8 py-12 pb-20">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-4xl font-serif font-bold flex items-center gap-3 mb-2">
-              <Clock className="h-8 w-8 text-accent" />
-              Recently Played
-            </h2>
-            <p className="text-muted-foreground">Jump back into the action</p>
+        </section>
+        
+        {/* Stats Grid */}
+        <section className="container mx-auto px-8 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {stats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className="relative group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 rounded-2xl blur transition-all duration-300`} />
+                <div className="relative bg-card/30 backdrop-blur-sm border border-border rounded-2xl p-6 transition-all duration-300 group-hover:border-accent/50">
+                  <stat.icon className="h-6 w-6 mb-3 text-accent" />
+                  <div className="text-3xl font-serif font-bold mb-2 bg-gradient-to-br bg-clip-text text-transparent from-foreground to-muted-foreground">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                </div>
+              </div>
+            ))}
           </div>
-          <Link to="/servers">
-            <Button variant="outline" className="gap-2">
-              View All
-              <TrendingUp className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {recentServers.map((server) => (
-            <ServerCard key={server.id} {...server} />
-          ))}
-        </div>
-      </section>
+        </section>
+        
+        {/* Favorite Servers */}
+        <section className="container mx-auto px-8 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-serif font-bold flex items-center gap-3 mb-2">
+                <Star className="h-6 w-6 text-accent" />
+                Favorite Servers
+              </h2>
+              <p className="text-muted-foreground text-sm">Your most played communities</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {favoriteServers.map((server) => (
+              <ServerCard key={server.id} {...server} />
+            ))}
+          </div>
+        </section>
+        
+        {/* Recent Servers */}
+        <section className="container mx-auto px-8 py-8 pb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-serif font-bold flex items-center gap-3 mb-2">
+                <Clock className="h-6 w-6 text-accent" />
+                Recently Played
+              </h2>
+              <p className="text-muted-foreground text-sm">Jump back into the action</p>
+            </div>
+            <Link to="/servers">
+              <Button variant="outline" className="gap-2">
+                View All
+                <TrendingUp className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {recentServers.map((server) => (
+              <ServerCard key={server.id} {...server} />
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

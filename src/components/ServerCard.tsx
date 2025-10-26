@@ -38,7 +38,7 @@ const ServerCard = ({
       <Link to={`/server/${id}`} className="block relative">
         <div className="bg-card/50 backdrop-blur-sm border border-border rounded-2xl overflow-hidden transition-all duration-300 group-hover:border-accent/50 group-hover:translate-y-[-4px]">
           {/* Banner */}
-          <div className="relative h-32 overflow-hidden">
+          <div className="relative h-24 overflow-hidden">
             <img 
               src={banner || "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&q=80"} 
               alt={`${name} banner`}
@@ -48,7 +48,7 @@ const ServerCard = ({
             
             {/* Logo */}
             {logo && (
-              <div className="absolute -bottom-8 left-6 w-16 h-16 rounded-xl border-2 border-border bg-card overflow-hidden shadow-lg">
+              <div className="absolute -bottom-6 left-4 w-12 h-12 rounded-lg border-2 border-border bg-card overflow-hidden shadow-lg">
                 <img 
                   src={logo} 
                   alt={`${name} logo`}
@@ -58,11 +58,11 @@ const ServerCard = ({
             )}
           </div>
           
-          <div className="p-6 pt-10">
+          <div className="p-4 pt-8">
             {/* Header */}
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-serif font-bold mb-2 truncate group-hover:text-accent transition-colors">
+                <h3 className="text-lg font-serif font-bold mb-2 truncate group-hover:text-accent transition-colors">
                   {name}
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -79,29 +79,29 @@ const ServerCard = ({
             </div>
           
           {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="flex items-center gap-2 text-sm">
-              <Users className="h-4 w-4 text-accent" />
+          <div className="grid grid-cols-3 gap-3 mb-3">
+            <div className="flex items-center gap-2 text-xs">
+              <Users className="h-3 w-3 text-accent" />
               <span className="text-foreground font-medium">{players}</span>
               <span className="text-muted-foreground">/ {maxPlayers}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <Wifi className="h-4 w-4 text-success" />
+            <div className="flex items-center gap-2 text-xs">
+              <Wifi className="h-3 w-3 text-success" />
               <span className="text-foreground font-medium">{ping}ms</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <MapPin className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-2 text-xs">
+              <MapPin className="h-3 w-3 text-primary" />
               <span className="text-muted-foreground truncate">{map}</span>
             </div>
           </div>
           
           {/* Progress Bar */}
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-2 text-xs">
+          <div className="mb-3">
+            <div className="flex items-center justify-between mb-1 text-xs">
               <span className="text-muted-foreground">Population</span>
               <span className="text-foreground font-medium">{fillPercentage.toFixed(0)}%</span>
             </div>
-            <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-accent to-primary transition-all duration-500"
                 style={{ width: `${fillPercentage}%` }}
