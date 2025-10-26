@@ -65,7 +65,7 @@ const Settings = () => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto px-8 py-6">
+        <div className="flex-1 overflow-y-auto scrollbar-hide px-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl">
             {settingsSections.map((section) => (
               <Card key={section.title} className="bg-card/30 backdrop-blur-sm border-border">

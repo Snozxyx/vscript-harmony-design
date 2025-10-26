@@ -86,4 +86,13 @@
   .card-elevated:hover {
     @apply border-accent/50 shadow-lg shadow-accent/10;
   }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
