@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, Clock, TrendingUp, Sparkles, Zap, Activity } from "lucide-react";
+import { Star, Clock, TrendingUp, Sparkles, Zap, Activity, Flame, Users, Gamepad2, Trophy } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
 import TermsModal from "@/components/TermsModal";
@@ -21,6 +21,19 @@ const Home = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+  const featuredServer = {
+    id: "featured-1",
+    name: "Los Santos Roleplay Elite",
+    players: 187,
+    maxPlayers: 200,
+    gameMode: "Roleplay",
+    map: "Los Santos",
+    ping: 24,
+    isFavorite: true,
+    banner: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=800&q=80",
+    logo: "https://images.unsplash.com/photo-1614294148960-9aa740632a87?w=200&q=80",
+  };
+
   const favoriteServers = [
     {
       id: "1",
@@ -111,34 +124,90 @@ const Home = () => {
           <div className="absolute bottom-20 left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
           
           <div className="relative container mx-auto px-8 py-16">
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-4 animate-fade-in">
-                <Sparkles className="h-4 w-4 text-accent" />
-                <span className="text-sm text-accent font-medium">Welcome to GG Multiplayer</span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Headlines and CTAs */}
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20 mb-4 animate-fade-in">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-accent/50 rounded-full animate-ping" />
+                    <div className="relative w-2 h-2 bg-accent rounded-full" />
+                  </div>
+                  <span className="text-sm text-accent font-medium">45,392 Players Online</span>
+                </div>
+                
+                <h1 className="text-5xl md:text-7xl font-serif font-black mb-4 leading-none animate-slide-in-left">
+                  <span className="gradient-white-orange">Join the Battle</span>
+                  <br />
+                  <span className="text-foreground">Play Without Limits</span>
+                </h1>
+                
+                <p className="text-lg text-muted-foreground max-w-2xl mb-6 animate-fade-in">
+                  Join thousands of players in epic roleplay, intense deathmatches, and adrenaline-pumping races. Your next adventure is one click away.
+                </p>
+                
+                {/* Quick Stats */}
+                <div className="flex flex-wrap gap-6 mb-8 animate-fade-in">
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-accent" />
+                    <div>
+                      <div className="text-2xl font-bold text-foreground">2,847</div>
+                      <div className="text-xs text-muted-foreground">Active Servers</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-accent" />
+                    <div>
+                      <div className="text-2xl font-bold text-foreground">127</div>
+                      <div className="text-xs text-muted-foreground">Countries</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Gamepad2 className="h-5 w-5 text-accent" />
+                    <div>
+                      <div className="text-2xl font-bold text-foreground">24/7</div>
+                      <div className="text-xs text-muted-foreground">Always Online</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-4 animate-fade-in">
+                  <Link to="/servers">
+                    <Button size="lg" className="gap-2 shadow-lg shadow-accent/20 relative group">
+                      <Zap className="h-5 w-5" />
+                      Jump Into Action
+                      <div className="absolute inset-0 bg-accent/20 rounded-md blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Button>
+                  </Link>
+                  <Link to="/servers">
+                    <Button size="lg" variant="outline" className="gap-2">
+                      <Flame className="h-5 w-5" />
+                      See What's Hot
+                    </Button>
+                  </Link>
+                </div>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-serif font-black mb-4 leading-none animate-slide-in-left">
-                <span className="gradient-white-orange">Your Gaming</span>
-                <br />
-                <span className="text-foreground">Universe</span>
-              </h1>
-              
-              <p className="text-lg text-muted-foreground max-w-2xl mb-6 animate-fade-in">
-                Dive into immersive experiences. Connect with players worldwide. Create unforgettable moments.
-              </p>
-              
-              <div className="flex gap-4 animate-fade-in">
-                <Link to="/servers">
-                  <Button size="lg" className="gap-2 shadow-lg shadow-accent/20">
-                    <TrendingUp className="h-5 w-5" />
-                    Explore Servers
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button size="lg" variant="outline">
-                    Get Started
-                  </Button>
-                </Link>
+              {/* Right: Featured Server Spotlight */}
+              <div className="animate-fade-in">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-accent to-orange-600 rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-all duration-300 animate-pulse" />
+                  <div className="relative bg-card border border-accent/20 rounded-2xl overflow-hidden">
+                    <div className="absolute top-4 right-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/90 backdrop-blur-sm animate-pulse">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                      <span className="text-xs font-bold text-white">LIVE NOW</span>
+                    </div>
+                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-600/90 backdrop-blur-sm">
+                      <Flame className="h-3 w-3 text-white" />
+                      <span className="text-xs font-bold text-white">HOT SERVER</span>
+                    </div>
+                    <ServerCard {...featuredServer} />
+                    <div className="p-4 bg-accent/5 border-t border-accent/10">
+                      <p className="text-sm text-muted-foreground text-center">
+                        <span className="text-accent font-semibold">187 players</span> experiencing epic roleplay right now
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
