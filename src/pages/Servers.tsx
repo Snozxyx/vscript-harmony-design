@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Search, Filter, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import ServerCard from "@/components/ServerCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import FilterPanel, { FilterOptions } from "@/components/FilterPanel";
+import ActivityFeed from "@/components/ActivityFeed";
 import {
   Select,
   SelectContent,
@@ -14,7 +16,14 @@ import {
 
 const Servers = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [gameMode, setGameMode] = useState("all");
+  const [sortBy, setSortBy] = useState("players");
+  const [filters, setFilters] = useState<FilterOptions>({
+    gameModes: [],
+    playerRange: [0, 200],
+    pingRange: [0, 100],
+    maps: [],
+    tags: [],
+  });
   
   const allServers = [
     {
@@ -87,11 +96,34 @@ const Servers = () => {
     },
   ];
   
-  const filteredServers = allServers.filter((server) => {
-    const matchesSearch = server.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesMode = gameMode === "all" || server.gameMode.toLowerCase() === gameMode.toLowerCase();
-    return matchesSearch && matchesMode;
-  });
+  const filteredServers = allServers
+    .filter((server) => {
+      const matchesSearch = server.name.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesGameMode =
+        filters.gameModes.length === 0 || filters.gameModes.includes(server.gameMode);
+      
+      const matchesPlayerRange =
+        server.players >= filters.playerRange[0] && server.players <= filters.playerRange[1];
+      
+      const matchesPing = server.ping <= filters.pingRange[1];
+      
+      const matchesMap = filters.maps.length === 0 || filters.maps.includes(server.map);
+      
+      return matchesSearch && matchesGameMode && matchesPlayerRange && matchesPing && matchesMap;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "players":
+          return b.players - a.players;
+        case "ping":
+          return a.ping - b.ping;
+        case "name":
+          return a.name.localeCompare(b.name);
+        default:
+          return 0;
+      }
+    });
   
   return (
     <div className="min-h-screen bg-background pr-20">
@@ -109,13 +141,10 @@ const Servers = () => {
                 Discover {allServers.length} active communities
               </p>
             </div>
-            <Button variant="outline" className="gap-2">
-              <SlidersHorizontal className="h-4 w-4" />
-              Advanced Filters
-            </Button>
+            <FilterPanel onFilterChange={setFilters} />
           </div>
           
-          {/* Search & Filter Bar */}
+          {/* Search & Sort Bar */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -126,48 +155,56 @@ const Servers = () => {
                 className="pl-12 h-12 bg-card/50 backdrop-blur-sm border-border"
               />
             </div>
-            <Select value={gameMode} onValueChange={setGameMode}>
+            <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full md:w-[220px] h-12 bg-card/50 backdrop-blur-sm">
-                <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Game Mode" />
+                <ArrowUpDown className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Sort By" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Modes</SelectItem>
-                <SelectItem value="roleplay">Roleplay</SelectItem>
-                <SelectItem value="racing">Racing</SelectItem>
-                <SelectItem value="deathmatch">Deathmatch</SelectItem>
-                <SelectItem value="cops & robbers">Cops & Robbers</SelectItem>
+                <SelectItem value="players">Most Players</SelectItem>
+                <SelectItem value="ping">Best Ping</SelectItem>
+                <SelectItem value="name">Name (A-Z)</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
       </section>
       
-      {/* Server Grid */}
+      {/* Main Content */}
       <section className="container mx-auto px-8 py-12">
-        {filteredServers.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredServers.map((server, index) => (
-              <div
-                key={server.id}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <ServerCard {...server} />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Server Grid */}
+          <div className="lg:col-span-3">
+            {filteredServers.length > 0 ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredServers.map((server, index) => (
+                  <div
+                    key={server.id}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <ServerCard {...server} />
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div className="text-center py-20">
+                <div className="w-16 h-16 rounded-full bg-muted/30 flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-xl font-serif font-bold mb-2">No servers found</h3>
+                <p className="text-muted-foreground">
+                  Try adjusting your search or filter criteria
+                </p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="w-16 h-16 rounded-full bg-muted/30 flex items-center justify-center mx-auto mb-4">
-              <Search className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-xl font-serif font-bold mb-2">No servers found</h3>
-            <p className="text-muted-foreground">
-              Try adjusting your search or filter criteria
-            </p>
+
+          {/* Sidebar - Activity Feed */}
+          <div className="lg:col-span-1">
+            <ActivityFeed />
           </div>
-        )}
+        </div>
       </section>
     </div>
   );

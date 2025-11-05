@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import JoiningServerModal from "@/components/JoiningServerModal";
+import ServerReviews from "@/components/ServerReviews";
+import FriendsList from "@/components/FriendsList";
 
 const ServerDetail = () => {
   const { id } = useParams();
@@ -176,6 +178,9 @@ const ServerDetail = () => {
                 </div>
               </div>
             </div>
+
+            {/* Server Reviews */}
+            <ServerReviews />
           </div>
           
           {/* Right Column - Actions */}
@@ -226,6 +231,9 @@ const ServerDetail = () => {
                 </div>
               </div>
             </div>
+
+            {/* Friends List */}
+            <FriendsList />
           </div>
         </div>
       </section>
